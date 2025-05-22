@@ -16,4 +16,8 @@ public interface UserMapper {
     @Insert("INSERT INTO user (user_name, password) VALUES (#{userName}, #{password})")
     int insertUser(RegisterRequest registerRequest);
 
+    @Select("SELECT * FROM user WHERE id = #{userId}")
+    User selectById(@Param("userId") int userId);
+
+
 }

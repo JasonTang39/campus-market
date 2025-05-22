@@ -15,12 +15,12 @@ public class UserService {
     }
 
     // login
-    public Boolean login(LoginRequest loginRequest) {
+    public User login(LoginRequest loginRequest) {
         User user = userMapper.selectByName(loginRequest.getUserName());
         if (user != null && loginRequest.getPassword().equals(user.getPassword())) {
-            return true;
+            return user;
         } else {
-            return false;
+            return null;
         }
     }
 
@@ -33,5 +33,9 @@ public class UserService {
         } else {
             return false;
         }
+    }
+
+    public User getUserById(int userId) {
+        return userMapper.selectById(userId);
     }
 }

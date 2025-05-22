@@ -2,7 +2,10 @@ package com.example.campusmarketserver.controller;
 
 import com.example.campusmarketserver.model.dto.LoginRequest;
 import com.example.campusmarketserver.model.dto.RegisterRequest;
+import com.example.campusmarketserver.model.entity.User;
 import com.example.campusmarketserver.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +20,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        boolean success = userService.login(loginRequest);
-        if (success) {
-            return ResponseEntity.ok("login successfully");
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+        User user = userService.login(loginRequest);
+        if (user != null) {
+            Cookie cookie = new Cookie("userId", String.valueOf(user.getId()));
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(7 * 24 * 60 * 60);
+            response.addCookie(cookie);
+            return ResponseEntity.ok("login successful");
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("user does not exist or wrong password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("invalid credentials");
         }
     }
 
@@ -36,4 +44,13 @@ public class UserController {
         }
     }
 
+    @GetMapping("/info")
+    public ResponseEntity<User> getUserInfo(@CookieValue("userId") int userId) {
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

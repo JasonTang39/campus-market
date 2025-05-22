@@ -9,19 +9,34 @@
 
 <script setup>
 	import {
-		ref
+		ref,
+		onMounted
 	} from 'vue'
+	import axios from 'axios';
 	import tabbarVue from '../../components/tabbar.vue';
 
 	const pageName = ref('user')
 	const userName = ref('')
-	const money = ref()
+	const money = ref('')
 
 	const goToMyTransactions = () => {
 		uni.navigateTo({
 			url: '/pages/myTransactions/myTransactions'
 		})
 	}
+
+	onMounted(() => {
+		axios.get('http://localhost:8080/api/user/info', {
+			withCredentials: true
+		}).then(response => {
+			console.log(response);
+			const data = response.data
+			userName.value = data.userName 
+			money.value = data.money + ' 元'
+		}).catch(error => {
+			console.error(error)
+		})
+	})
 </script>
 
 <style>
