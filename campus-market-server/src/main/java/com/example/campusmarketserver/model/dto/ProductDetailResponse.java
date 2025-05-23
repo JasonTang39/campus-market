@@ -1,10 +1,12 @@
-package com.example.campusmarketserver.model.entity;
+package com.example.campusmarketserver.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class Product {
+@AllArgsConstructor
+public class ProductDetailResponse {
+    private String sellerName;
     private int id;
     private int sellerId;
     private String productName;

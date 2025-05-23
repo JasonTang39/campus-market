@@ -53,6 +53,9 @@
     "@dcloudio/uni-mp-xhs": "3.0.0-4060420250429001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-4060420250429001",
     "axios": "^1.9.0",
+    "js-cookie": "^3.0.5",
+    "markdown-it": "^14.1.0",
+    "openai": "^4.102.0",
     "vant": "^4.9.19",
     "vue": "^3.4.21",
     "vue-i18n": "^9.1.9"

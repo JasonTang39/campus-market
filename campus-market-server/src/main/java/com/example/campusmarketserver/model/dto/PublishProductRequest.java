@@ -1,14 +1,14 @@
-package com.example.campusmarketserver.model.entity;
+package com.example.campusmarketserver.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class Product {
-    private int id;
-    private int sellerId;
+@AllArgsConstructor
+public class PublishProductRequest {
     private String productName;
     private String productDescription;
     private double productPrice;
-    private String productImageUrl;
+    private MultipartFile productImage;
 }

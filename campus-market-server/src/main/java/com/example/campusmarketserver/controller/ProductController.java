@@ -1,10 +1,14 @@
 package com.example.campusmarketserver.controller;
 
+import com.example.campusmarketserver.model.dto.ProductDetailResponse;
+import com.example.campusmarketserver.model.dto.PublishProductRequest;
 import com.example.campusmarketserver.model.entity.Product;
 import com.example.campusmarketserver.service.ProductService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,5 +24,24 @@ public class ProductController {
     @GetMapping("/getAll")
     public List<Product> getAllProduct() {
         return productService.getAllProduct();
+    }
+
+    @PostMapping(value = "/publish", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String publishProduct(
+            @CookieValue("userId") int userId,
+            @RequestParam("productName") String productName,
+            @RequestParam("productDescription") String productDescription,
+            @RequestParam("productPrice") Double productPrice,
+            @RequestParam("image") MultipartFile productImage
+    ) {
+
+        PublishProductRequest publishProductRequest = new PublishProductRequest(productName, productDescription, productPrice, productImage);
+        productService.publishProduct(userId, publishProductRequest);
+        return "publish product successfully";
+    }
+
+    @GetMapping("/getProductDetail")
+    public ProductDetailResponse getAllProductDetail(@RequestParam("productId") int productId) {
+        return productService.getProductDetail(productId);
     }
 }

@@ -25,7 +25,7 @@ public class UserController {
         if (user != null) {
             Cookie cookie = new Cookie("userId", String.valueOf(user.getId()));
             cookie.setPath("/");
-            cookie.setHttpOnly(true);
+            cookie.setHttpOnly(false);
             cookie.setMaxAge(7 * 24 * 60 * 60);
             response.addCookie(cookie);
             return ResponseEntity.ok("login successful");

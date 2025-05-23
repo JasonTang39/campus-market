@@ -18,6 +18,4 @@ public interface UserMapper {
 
     @Select("SELECT * FROM user WHERE id = #{userId}")
     User selectById(@Param("userId") int userId);
-
-
 }

@@ -54,6 +54,20 @@
 			{
 				"navigationBarTitleText" : "我的交易"
 			}
+		},
+		{
+			"path" : "pages/message/message",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/productDetail/productDetail",
+			"style" : 
+			{
+				"navigationBarTitleText" : "商品详细信息"
+			}
 		}
 	],
 	"globalStyle": {

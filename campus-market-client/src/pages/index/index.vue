@@ -1,7 +1,7 @@
 <template>
 	<van-cell-group inset style="margin-top: 40%;">
-		<van-field v-model="userName" placeholder="请输入用户名" label="用户名"/>
-		<van-field v-model="password" type="password" placeholder="请输入密码" label="密码"/>
+		<van-field v-model="userName" placeholder="请输入用户名" label="用户名" />
+		<van-field v-model="password" type="password" placeholder="请输入密码" label="密码" />
 	</van-cell-group>
 	<div style="display: flex;justify-content: center;margin-top: 20%;">
 		<van-button type="primary" style="width: 60%;" @click="login">登录</van-button>
@@ -37,6 +37,8 @@
 		axios.post('http://localhost:8080/api/user/login', {
 				userName: userName.value,
 				password: password.value
+			}, {
+				withCredentials: true 
 			})
 			.then(function(response) {
 				showNotify({
@@ -45,7 +47,7 @@
 				});
 				uni.redirectTo({
 					url: '/pages/home/home'
-				})
+				});
 
 				console.log(response);
 			})
@@ -56,5 +58,5 @@
 				});
 				console.log(error);
 			});
-	}
+	};
 </script>
