@@ -1,6 +1,7 @@
 <template>
 	<van-cell-group>
 		<van-cell title="用户名" :value="userName" icon="user-circle-o" size="large" />
+		<van-cell title="学校" :value="schoolName" icon="info-o" size="large" />
 		<van-cell title="钱包" :value="money" icon="balance-o" size="large" />
 		<van-cell title="我的交易" is-link icon="bill-o" size="large" @click="goToMyTransactions" />
 	</van-cell-group>
@@ -22,6 +23,7 @@
 
 	const pageName = ref('user')
 	const userName = ref('')
+	const schoolName = ref('')
 	const money = ref('')
 
 	const goToMyTransactions = () => {
@@ -37,6 +39,7 @@
 			console.log(response);
 			const data = response.data
 			userName.value = data.userName 
+			schoolName.value = data.schoolName
 			money.value = data.money + ' 元'
 		}).catch(error => {
 			console.error(error)

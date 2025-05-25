@@ -1,5 +1,5 @@
 <template>
-	<van-search v-model="searchKeyWord" placeholder="请输入搜索关键词" />
+	<van-search v-model="searchKeyWord" placeholder="请输入搜索关键词" :label="schoolName" />
 	<van-notice-bar left-icon="volume-o" text="本小程序仍处于测试阶段，若遇到问题，请及时反馈。谢谢！" />
 
 	<!-- 无限滚动列表 -->
@@ -40,8 +40,10 @@
 				params: {
 					page: page.value,
 					size: pageSize
-				}
-			})
+				},
+				withCredentials: true
+			});
+
 
 			const data = response.data
 

@@ -4,6 +4,7 @@
 			icon="contact" size="large" is-link
 			@click="goToMessage(chat.id,chat.senderId,chat.receiverId,chat.chatPartnerName)" />
 	</van-cell-group>
+	
 	<tabbarVue :page-name="pageName" />
 </template>
 

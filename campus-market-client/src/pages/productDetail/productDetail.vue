@@ -11,11 +11,13 @@
 		</van-cell>
 	</van-cell-group>
 
-	<div style="display: flex; justify-content: center;">
-		<van-button type="success" round block style="position: fixed; bottom: 11%; width: 90%;"
-			@click="goToChat">联系卖家</van-button>
-		<van-button type="primary" round block style="position: fixed; bottom: 2%; width: 90%;">购买商品</van-button>
-	</div>
+	<van-action-bar>
+		<van-action-bar-icon icon="service-o" text="客服" @click="goToService" />
+		<van-action-bar-icon icon="share-o" text="分享" @click="showShare = true" />
+		<van-action-bar-icon icon="chat-o" text="联系卖家" @click="goToChat" />
+		<van-action-bar-button type="primary" text="立即购买" @click="buyProduct" />
+	</van-action-bar>
+	<van-share-sheet v-model:show="showShare" title="立即分享给好友" :options="options" />
 
 </template>
 
@@ -37,30 +39,74 @@
 			}
 		}).then(response => {
 			product.value = response.data
-			console.log(response)
+			console.log(response.data)
 		}).catch(error => {
 			console.error(error)
 		})
 	})
 
 	const goToChat = () => {
-	  axios.post('http://localhost:8080/api/chat/save', {
-	    receiverId: product.value.sellerId,
-	    productId: product.value.id
-	  }, {
-	    withCredentials: true  // 这里才是配置项，允许携带 cookie
-	  })
-	  .then(response => {
-	    console.log(response);
-	    uni.navigateTo({
-	      url: '/pages/chat/chat'
-	    });
-	  })
-	  .catch(error => {
-	    console.error(error);
-	  });
+		axios.post('http://localhost:8080/api/chat/save', {
+				receiverId: product.value.sellerId,
+				productId: product.value.id
+			}, {
+				withCredentials: true // 这里才是配置项，允许携带 cookie
+			})
+			.then(response => {
+				console.log(response);
+				uni.navigateTo({
+					url: '/pages/chat/chat'
+				});
+			})
+			.catch(error => {
+				console.error(error);
+			});
 	};
 
+	const goToService = () => {
+		uni.reLaunch({
+			url: "/pages/service/service"
+		})
+	}
+
+	const showShare = ref(false);
+	const options = [{
+			name: '微信',
+			icon: 'wechat'
+		},
+		{
+			name: '微博',
+			icon: 'weibo'
+		},
+		{
+			name: '复制链接',
+			icon: 'link'
+		},
+		{
+			name: '分享海报',
+			icon: 'poster'
+		},
+		{
+			name: '二维码',
+			icon: 'qrcode'
+		},
+	];
+
+	const buyProduct = () => {
+		axios.post('http://localhost:8080/api/product/buyProduct', {
+			sellerId: product.value.sellerId,
+			productId: product.value.id
+		}, {
+			withCredentials: true // 允许携带 cookie
+		}).then(response => {
+			uni.redirectTo({
+				url: "/pages/home/home"
+			});
+			console.log(response);
+		}).catch(error => {
+			console.error(error);
+		});
+	}
 </script>
 
 <style>

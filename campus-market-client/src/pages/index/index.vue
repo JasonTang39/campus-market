@@ -1,5 +1,15 @@
 <template>
-	<van-cell-group inset style="margin-top: 40%;">
+	<div style="display: flex;justify-content: center; align-items: center; margin-top: 30%;">
+		<van-image
+		  width="40"
+		  height="40"
+		  src="/static/icon.png"
+		/>
+		<span style="font-size: 35px; margin-left: 10px; ">校园集市</span>
+	</div>
+	
+	
+	<van-cell-group inset style="margin-top: 15%;">
 		<van-field v-model="userName" placeholder="请输入用户名" label="用户名" />
 		<van-field v-model="password" type="password" placeholder="请输入密码" label="密码" />
 	</van-cell-group>

@@ -1,9 +1,11 @@
 package com.example.campusmarketserver.controller;
 
+import com.example.campusmarketserver.model.dto.BuyProductRequest;
 import com.example.campusmarketserver.model.dto.ProductDetailResponse;
 import com.example.campusmarketserver.model.dto.PublishProductRequest;
 import com.example.campusmarketserver.model.entity.Product;
 import com.example.campusmarketserver.service.ProductService;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +24,8 @@ public class ProductController {
     }
 
     @GetMapping("/getAll")
-    public List<Product> getAllProduct() {
-        return productService.getAllProduct();
+    public List<Product> getAllProduct(@CookieValue("userId") int userId) {
+        return productService.getAllProduct(userId);
     }
 
     @PostMapping(value = "/publish", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -44,4 +46,21 @@ public class ProductController {
     public ProductDetailResponse getAllProductDetail(@RequestParam("productId") int productId) {
         return productService.getProductDetail(productId);
     }
+
+    @GetMapping("/getPublishedProducts")
+    public List<Product> getPublishedProducts(@CookieValue("userId") int userId) {
+        return productService.getPublishedProducts(userId);
+    }
+
+
+    @PostMapping("/buyProduct")
+    public void buyProduct(@CookieValue("userId") int buyerId, @RequestBody BuyProductRequest buyProductRequest) {
+        productService.backupAndDeleteProduct(buyProductRequest.getSellerId(), buyerId, buyProductRequest.getProductId());
+    }
+
+    @DeleteMapping("/removeProduct")
+    public void removeProduct(@RequestParam("productId") int productId) {
+        productService.removeProduct(productId);
+    }
+
 }

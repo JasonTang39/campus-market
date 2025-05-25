@@ -5,6 +5,7 @@ import com.example.campusmarketserver.model.dto.ProductDetailResponse;
 import com.example.campusmarketserver.model.dto.PublishProductRequest;
 import com.example.campusmarketserver.model.entity.Product;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -20,8 +21,8 @@ public class ProductService {
         this.productMapper = productMapper;
     }
 
-    public List<Product> getAllProduct() {
-        return productMapper.selectAll();
+    public List<Product> getAllProduct(int userId) {
+        return productMapper.selectAll(userId);
     }
 
 
@@ -39,7 +40,7 @@ public class ProductService {
         }
 
         Product product = new Product();
-        product.setSellerId(sellerId);;
+        product.setSellerId(sellerId);
         product.setProductName(publishProductRequest.getProductName());
         product.setProductDescription(publishProductRequest.getProductDescription());
         product.setProductPrice(publishProductRequest.getProductPrice());
@@ -48,7 +49,22 @@ public class ProductService {
         int rows = productMapper.saveProduct(product);
     }
 
-    public ProductDetailResponse getProductDetail(int productId){
+    public ProductDetailResponse getProductDetail(int productId) {
         return productMapper.selectProductDetail(productId);
+    }
+
+    public List<Product> getPublishedProducts(int userId) {
+        return productMapper.selectPublishedProducts(userId);
+    }
+
+    @Transactional
+    public void backupAndDeleteProduct(int sellerId, int buyerId, int productId) {
+        productMapper.backupProduct(productId);
+        productMapper.deleteProduct(productId);
+        productMapper.insertOrder(sellerId, buyerId, productId);
+    }
+
+    public void removeProduct(int productId) {
+        productMapper.deleteProduct(productId);
     }
 }
